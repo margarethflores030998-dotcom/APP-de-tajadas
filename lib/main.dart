@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 // ====== Datos de mimicroempresa ======
 const businessName = 'Tajaderia La Familia';
 const businessSlogan = 'Bolsitas de tajadas listas para disfrutar';
+const whatsappNumber = '50584686130';
 const currency = 'C\$';
 // ===========================================================
 
