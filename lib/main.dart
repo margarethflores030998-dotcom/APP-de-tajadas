@@ -187,7 +187,16 @@ class _CartPageState extends State<CartPage> {
         '$lines\n\n'
         'Total: $currency${cart.total.toStringAsFixed(2)}';
   }
-
+  Future<void> sendWhatsApp(String message) async {
+    final url = Uri.parse(
+        'https://wa.me/$whatsappNumber?text=${Uri.encodeComponent(message)}');
+    final ok = await launchUrl(url, mode: LaunchMode.externalApplication);
+    if (!ok && mounted) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('No se pudo abrir WhatsApp')),
+      );
+    }
+  }
   void confirmOrder() {
     if (nameCtrl.text.trim().isEmpty || addressCtrl.text.trim().isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -211,14 +220,16 @@ class _CartPageState extends State<CartPage> {
             },
             child: const Text('Copiar'),
           ),
-          FilledButton(
-            onPressed: () {
-              widget.cart.clear();
-              Navigator.pop(ctx);
-              Navigator.pop(context);
-            },
-            child: const Text('Listo'),
-          ),
+        FilledButton.icon(
+  onPressed: () async {
+    await sendWhatsApp(message);
+    widget.cart.clear();
+    if (ctx.mounted) Navigator.pop(ctx);
+    if (mounted) Navigator.pop(context);
+  },
+  icon: const Icon(Icons.send),
+  label: const Text('Enviar por WhatsApp'),
+),
         ],
       ),
     );
