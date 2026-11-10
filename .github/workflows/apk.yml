@@ -10,6 +10,11 @@ jobs:
           channel: stable
       - run: flutter create --platforms=android --project-name=app_de_tajadas .
       - run: flutter pub add url_launcher
+      - name: Declarar imagenes en pubspec
+        run: |
+          mkdir -p assets/productos
+          sed -i 's/^flutter:$/flutter:\n  assets:\n    - assets\/\n    - assets\/productos\//' pubspec.yaml
+          tail -n 15 pubspec.yaml
       - run: flutter pub get
       - run: flutter build apk --release
       - uses: actions/upload-artifact@v4
